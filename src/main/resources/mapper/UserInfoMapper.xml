@@ -1,0 +1,135 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<!--suppress ALL -->
+<mapper namespace="com.letoy.main.dao.UserInfoMapper">
+
+    <insert id="createUserInfoByUserInfo" parameterType="UserInfo">
+        insert into user_info (`uid`, `phone_number`, `username`, `password`, `active`, `role`, `avatar`)
+        VALUES (#{uid}, #{phoneNumber}, #{username}, #{password}, #{active}, #{role}, #{avatar})
+    </insert>
+
+    <select id="getAllUserInfo" resultType="UserInfo">
+        select uid,
+               phone_number,
+               username,
+               password,
+               active,
+               role
+                ,
+               avatar
+        from user_info;
+    </select>
+
+    <select id="getUserInfoByPhone" resultType="UserInfo">
+        select uid,
+               phone_number,
+               username,
+               password,
+               active,
+               role,
+               avatar
+        from user_info
+        where phone_number = #{phoneNumber};
+    </select>
+
+    <select id="getUserInfoByUidList" resultType="UserInfo">
+        select uid, phone_number, username, password, active, role, avatar
+        from user_info
+        where uid in (
+        <foreach collection="uidList" item="uid" separator=",">
+            #{uid}
+        </foreach>);
+    </select>
+
+    <select id="detectionDuplicatePhone" resultType="String">
+        select phone_number
+        from user_info
+        where phone_number = #{phoneNumber};
+    </select>
+
+    <update id="updateUserInfoByUidWithUserInfo">
+        update user_info
+        <set>
+            <if test="phoneNumber!=null">`phone_number`=#{phoneNumber},</if>
+            <if test="username!=null">`username`=#{username},</if>
+            <if test="active!=null">`active`=#{active},</if>
+            <if test="role!=null">`role`=#{role},</if>
+            <if test="avatar!=null">`avatar`=#{avatar},</if>
+        </set>
+        where uid = #{uid};
+    </update>
+
+    <select id="getUserInfoByUid" resultType="UserInfo">
+        select uid,
+               phone_number,
+               username,
+               password,
+               active,
+               role,
+               avatar
+        from user_info
+        where uid = #{uid};
+    </select>
+
+    <select id="getUserInfoByFuzzyQueryUsername" resultType="UserInfo">
+        select uid,
+               phone_number,
+               username,
+               active,
+               role,
+               avatar
+        from user_info
+        where username like "%"#{username}"%";
+    </select>
+
+    <select id="fuzzyQueryUsernameBySearchUsername" resultType="String">
+        select username from user_info
+        where username like "%"#{searchUsername}"%";
+    </select>
+
+    <select id="getUserInfoByUsername" resultType="UserInfo">
+        select uid, phone_number, username, password, active, role, avatar
+        from user_info
+        where username = #{username};
+    </select>
+
+    <update id="updateUserInfoByUsernameWithUserInfo" parameterType="UserInfo">
+        update user_info
+        <set>
+            <if test="uid!=null">`uid`=#{uid},</if>
+            <if test="phoneNumber!=null">`phone_number`=#{phoneNumber},</if>
+            <if test="username!=null">`username`=#{username},</if>
+            <if test="password!=null">`password`=#{password},</if>
+            <if test="active!=null">`active`=#{active},</if>
+            <if test="role!=null">`role`=#{role},</if>
+            <if test="avatar!=null">`avatar`=#{avatar},</if>
+        </set>
+        where username = #{username};
+    </update>
+
+    <update id="resetUserInfoPassword" parameterType="String">
+        update user_info
+        set `password`=#{password}
+        where `uid` = #{uid};
+    </update>
+
+    <delete id="deleteUserInfoByUid" parameterType="String">
+        delete
+        from user_info
+        where uid = #{uid};
+    </delete>
+
+    <update id="resetPhoneNumberByUidAndPhoneNumber" parameterType="String">
+        update user_info
+        set `phone_number` = #{phoneNumber}
+        where `uid` = #{uid};
+    </update>
+
+    <update id="updateUsernameByUid" parameterType="String">
+        update user_info
+        set `username` = #{username}
+        where `uid` = #{uid};
+    </update>
+
+
+</mapper>

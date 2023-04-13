@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.letoy.main.dao.ApiInfoMapper">
+
+    <select id="getApiInfoListByUid" resultType="ApiInfo">
+        select b.id, b.name, b.url, b.method,b.role
+        from user_info as a,
+             api_info as b
+        where a.role >= b.role
+          and a.uid = #{uid};
+    </select>
+
+    <insert id="createApiInfo" parameterType="ApiInfo">
+        insert into api_info (name, url, method, role)
+        VALUES (#{name}, #{url}, #{method}, #{role})
+    </insert>
+
+</mapper>

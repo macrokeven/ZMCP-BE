@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.letoy.main.dao.SystemLogInfoMapper">
+
+    <select id="getAllSystemLogInfo" resultType="SystemLogInfo">
+        select id,
+               username,
+               uid,
+               action_name,
+               transaction_name,
+               create_time,
+               str_sentence,
+               extra_info,
+               type,
+               module_type
+        from system_log_info;
+    </select>
+
+    <insert id="createSystemLoginInfoWithSystemLogInfo" parameterType="ActiveCode">
+        insert into system_log_info (`username`, `uid`, `action_name`, `transaction_name`, `create_time`, `type`,
+                                     `module_type`,
+                                     `str_sentence`, `extra_info`)
+        VALUES (#{username}, #{uid}, #{actionName}, #{transactionName}, #{createTime}, #{type}, #{moduleType},
+                #{strSentence}, #{extraInfo})
+    </insert>
+
+    <select id="getSystemLogInfoByUidListAndStartEndDateAndLogTypeList" resultType="SystemLogInfo">
+        select id,
+        type,
+        module_type,
+        username,
+        uid,
+        action_name,
+        transaction_name,
+        create_time,
+        str_sentence,
+        extra_info
+        from system_log_info where
+        `type` in (
+        <foreach collection="logTypeList" item="type" separator=",">
+            #{type}
+        </foreach>)
+        <if test="uidList.length > 0">
+            and `uid` in (
+            <foreach collection="uidList" item="uid" separator=",">
+                #{uid}
+            </foreach>)
+        </if>
+        <if test="startDate!=''">
+            and create_time <![CDATA[ >= ]]> #{startDate}
+        </if>
+        <if test="endDate!=''">
+            and create_time <![CDATA[ <= ]]> #{endDate}
+        </if>;
+    </select>
+</mapper>

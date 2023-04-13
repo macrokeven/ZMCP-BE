@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.letoy.wechat.pay.dao.LeOrderMapper">
+    <select id="getAllLeOrderInfo" resultType="com.letoy.wechat.pay.entity.LeOrder">
+        select id, create_time, create_uid, pay, pay_time, status
+        from le_order_info;
+    </select>
+</mapper>

@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.letoy.main.dao.ActiveCodeMapper">
+
+    <insert id="createActiveCode" parameterType="ActiveCode">
+        insert into active_code_info (code, create_time, phone_number, type)
+        VALUES (#{code}, #{createTime}, #{phoneNumber}, #{type})
+    </insert>
+
+    <select id="getActiveCodeByPhoneNumberAndType" resultType="ActiveCode">
+        select code, create_time, phone_number, type
+        from active_code_info
+        where phone_number = #{phoneNumber}
+          and type = #{type};
+    </select>
+
+    <update id="updateActiveCodeByPhoneNumberAndType" parameterType="ActiveCode">
+        update active_code_info
+        set code        = #{code},
+            create_time = #{createTime},
+            type        = #{type}
+        where phone_number = #{phoneNumber}
+          and type = #{type};
+    </update>
+
+    <delete id="delActiveCodeByPhoneNumberAndType" parameterType="String">
+        delete
+        from active_code_info
+        where phone_number = #{phoneNumber}
+          and type = #{type};
+    </delete>
+
+</mapper>
